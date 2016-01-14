@@ -59,48 +59,36 @@ def explore(L, pid):
         - L     (list)  The modified list
     '''
     
-    print()
-    print(L)
-    
-    root = L[pid][3]
+    # Initialization
     psize = 0
-    
     dext = {}
-    res = run("ls -qgGd \"{0}\"/* | awk '{{d=substr($1,0,1);s=$3; $1=$2=$3=$4=$5=$6=\"\";gsub(/^[ ]+/, \"\", $0);print d,s,substr($0,{1},256)}}'".format(root, len(root)+2))
+    
+    # Definitions
+    root = L[pid][4]
+    
+    # Get elements list
+    res = run("ls -qgG \"{0}\" | awk -f stree.awk".format(root))
+    
     for r in res:
-        
-        print(r)
-        
-        # Definitions
+    
+        # --- Skip empty folders
+        if r=='':
+            continue
+             
+        # --- Definitions
         tmp = r.split()
-        isdir = tmp[0]=='d'
+        etype = tmp[0]
+        name = ' '.join(tmp[2:])
         
-        if isdir:
-            
+        if etype=='-':
+        
             # ===================================
-            #   DIRECTORY
-            # ===================================
-            
-            # --- Add directory to list
-            L.append([pid, 0, None, root+'/'+' '.join(tmp[2:])])
-            id = len(L)-1
-            
-            # --- Recursive exploration
-            L = explore(L, id)
-            
-            # --- Update parent size
-            psize += L[id][2]
-            
-        else:
-            
-            # ===================================
-            #   FILES
+            #   FILE
             # ===================================
 
             # --- Definitions
             size = int(tmp[1])
-            fname = tmp[2]
-            _, ext = os.path.splitext(tmp[2])
+            _, ext = os.path.splitext(name)
             ext = ext[1:]
             
             # --- Sort by extension
@@ -110,33 +98,57 @@ def explore(L, pid):
                 dext[ext]['size'] += size
                 
                 # Update pattern
-                SM = difflib.SequenceMatcher(None, dext[ext]['pattern'], fname)
+                SM = difflib.SequenceMatcher(None, dext[ext]['p1']+dext[ext]['p2'], name)
                 blocks = SM.get_matching_blocks()
-                b1 = None
-                b2 = None
+                p1 = None
+                p2 = None
                 for B in blocks:
-                    bs = fname[B.b:B.b+B.size]
+                    bs = name[B.b:B.b+B.size]
                     if not bs.isdigit():
-                        if b1 is None:
-                            b1 = bs
-                        elif b2 is None:
-                            b2 = bs
+                        if p1 is None:
+                            p1 = bs
+                        elif p2 is None:
+                            p2 = bs
                             break
-                dext[ext]['pattern'] = b1 + '*' + b2
+                dext[ext]['p1'] = p1
+                dext[ext]['p2'] = p2
                 
                 # Number of digits
-                nrc = len(fname)-len(b1)-len(b2)
-                if dext[ext]['mind'] is None or nrc<dext[ext]['mind']:
-                    dext[ext]['mind'] = nrc
+                nrc = len(name)-len(p1)-len(p2)
                 if dext[ext]['maxd'] is None or nrc>dext[ext]['maxd']:
                     dext[ext]['maxd'] = nrc
                 
             else:
-                dext[ext] = {'n': 1, 'size': size, 'pattern': fname, 'mind': None, 'maxd': None}
+                dext[ext] = {'n': 1, 'size': size, 'p1': name, 'p2': '', 'maxd': None}
             
+        else:
+            
+            # ===================================
+            #   DIRECTORY, LINK
+            # ===================================
+            
+            # --- Add directory to list
+            if etype=='d':
+                L.append([pid, 0, None, name, root + '/' + name])
+            elif etype=='l':
+                ntmp = name.split(' -> ')
+                L.append([pid, -1, None, ntmp[0], ntmp[1]])
+            id = len(L)-1
+            
+            # --- Recursive exploration
+            L = explore(L, id)
+            
+            # --- Update parent size
+            if etype=='d':
+                psize += L[id][2]
+        
     # --- Append files to the list
     for ext, X in dext.items():
-        L.append([pid, X['n'], X['size'], X['pattern']])
+        if X['maxd'] is None:
+            pattern = X['p1']
+        else:
+            pattern = X['p1'] + '\033[31m' + '*'*X['maxd'] + '\033[36m' + X['p2']
+        L.append([pid, X['n'], X['size'], pattern, pattern])
         psize += X['size']
             
     # --- Update parent foler size
@@ -149,34 +161,38 @@ def explore(L, pid):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Clear the screen
-os.system('clear')
+# os.system('clear')
+print()
 
 # --- Inputs
 root = str(sys.argv[1])
 
-L = [[None, 0, None, root]]
+L = [[None, 0, None, root, root]]
 L = explore(L, 0)
 
 # --- Display
-        
 for i, x in enumerate(L):
     
     out = ''
     
     # --- Find level
-    lvl = 0
+    
+    pre = ''
     parent = x[0]
     while parent is not None:
-        parent = L[parent][0]
-        lvl += 1
-    
-    # --- Level spacers
-    if lvl>0:
-        
-        if x[0] in [item[0] for item in L[i+1:]]:        
-            out += ' │ '*(lvl-1) + ' ├─'
+        if parent in [item[0] for item in L[i+1:]]:
+            if parent is x[0]:
+                pre += '─├ '
+            else:
+                pre += ' │ '
         else:
-            out += ' │ '*(lvl-1) + ' └─'
+            if parent is x[0]:
+                pre += '─└ '
+            else:
+                pre += '   '
+        parent = L[parent][0]
+    out += pre[::-1]
+    
     
     # --- Size on disk
     tmp = '[' + hsize(x[2]) + ']'
@@ -186,13 +202,18 @@ for i, x in enumerate(L):
     if x[0] is None:
         out += '    ' + x[3]
     else:
-        if x[1]==0:     # Directory
-            out += '    \033[1m' + x[3][len(root)+1:] + '\033[0m'
+        if x[1]==-1:     # Link
+            out += '    \033[1m\033[32m' + x[3] + '\033[0m -> ' + x[4]
+        
+        elif x[1]==0:     # Directory
+            out += '    \033[1m' + x[3] + '\033[0m'
             
         elif x[1]==1:   # File
             out += '    \033[34m' + x[3] + '\033[0m'
             
         else:           #Group
-            out += '    \033[31m' + x[3] + '\033[0m [' + str(x[1]) + ' files]'
+            out += '    \033[36m' + x[3] + '\033[0m [' + str(x[1]) + ' files]'
     
     print(out)
+    
+print()
