@@ -1,0 +1,35 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('Fonts/roboto-condensed-webfont.eot');
+    src: url('Fonts/roboto-condensed-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/roboto-condensed-webfont.woff2') format('woff2'),
+         url('Fonts/roboto-condensed-webfont.woff') format('woff'),
+         url('Fonts/roboto-condensed-webfont.ttf') format('truetype'),
+         url('Fonts/roboto-condensed-webfont.svg#robotocondensed') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Skola';
+    src: url('Fonts/skolasanscn-regular-webfont.eot');
+    src: url('Fonts/skolasanscn-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/skolasanscn-regular-webfont.woff2') format('woff2'),
+         url('Fonts/skolasanscn-regular-webfont.woff') format('woff'),
+         url('Fonts/skolasanscn-regular-webfont.ttf') format('truetype'),
+         url('Fonts/skolasanscn-regular-webfont.svg#loraregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lora';
+    src: url('Fonts/lora-regular-webfont.eot');
+    src: url('Fonts/lora-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('Fonts/lora-regular-webfont.woff2') format('woff2'),
+         url('Fonts/lora-regular-webfont.woff') format('woff'),
+         url('Fonts/lora-regular-webfont.ttf') format('truetype'),
+         url('Fonts/lora-regular-webfont.svg#loraregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

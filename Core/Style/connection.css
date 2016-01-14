@@ -1,0 +1,75 @@
+body {
+    background: url('Background.png');
+}
+
+
+#container {
+    margin: 50px;
+    padding: 10px 0 50px 0;
+    
+    background-color: rgba(255, 255, 255, 0.6);
+    
+    text-align: center;
+}
+
+#language img { width: 40px; }
+
+h1 {
+    margin: 25px 0 50px 0;
+    font-family: Roboto;
+    font-size: 2.5em;
+}
+
+#tab { 
+    margin: 0 auto;
+    border-collapse:collapse;
+}
+
+#tab p {
+    margin: 0;
+    
+    text-align: right;
+    
+    font-family: Roboto;
+    font-size: 1.5em;
+}
+
+input:not([type=submit]) {
+    margin: 10px 25px;
+    padding: 10px;
+    
+    border: 3px solid white; 
+    -webkit-box-shadow: 
+        inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    -moz-box-shadow: 
+        inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    box-shadow: 
+        inset 0 0 8px  rgba(0,0,0,0.1),
+            0 0 16px rgba(0,0,0,0.1); 
+    
+    background: rgba(255,255,255,0.5);
+}
+
+input[type=submit] {
+    margin-top: 20px;
+    padding: 10px 20px;
+    
+    font-family: Roboto;
+    font-size: 1.25em;
+    color: #fff;
+    
+    background: tomato;
+    border: 1px solid #f44c0e;
+    border-radius: 3px;
+}
+
+input[type=submit]:hover {
+    background: #f44c0e;
+}
+
+#language {
+    margin: 0 20px 0 0;
+    float: right;
+}

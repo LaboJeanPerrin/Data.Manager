@@ -1,0 +1,38 @@
+#structure {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse; 
+}
+
+#structure td { 
+    padding: 0;
+    vertical-align: top;
+}
+
+/* === MAIN ============================================================= */
+
+#user_list a {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 7px 15px;
+    color: black;
+    background: #EEE;
+    border: 1px solid #CCC;
+    font-family: Roboto; 
+}
+
+#user_list a:hover {
+    color: #EEE;
+    background: black;
+}
+
+#user_list a#user_selected {
+    background: #80bfff;
+}
+
+.user_table p {
+    margin: 0;
+    padding: 3px 10px 0 0;
+    font-family: Roboto; 
+}

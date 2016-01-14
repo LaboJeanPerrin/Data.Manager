@@ -1,0 +1,60 @@
+#menu_bar {
+    width: 250px;
+    background: #EEE;
+    border-right: 1px solid #AAA;
+}
+
+#logo {
+    position: fixed;
+    top: 0px;
+    margin: 25px auto;
+    width: 250px;
+}
+
+#menu {
+    position: absolute;
+    top: 150px;
+}
+
+.menu_item {
+    display: block;
+    width: 180px;
+    margin: 0;
+    padding: 12px 10px 14px 60px;
+    font-family: Roboto;
+    font-size: 1.2em;
+    color: black;
+    background-repeat: no-repeat;
+    background-position: 5px 5px;
+}
+
+.menu_item:hover { 
+    color: #CCC; 
+    background-color: black;
+}
+
+#menu_Param { background-image: url('Icons/Sources/settings.svg'); }
+#menu_Users { background-image: url('Icons/Sources/users.svg'); }
+#menu_Locations { background-image: url('Icons/Sources/locations.svg'); }
+
+#language {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+}
+
+#disconnection {
+    display: block;
+    position: absolute;
+    bottom: 15px;
+    left: 200px;
+    width: 44px;
+    height: 42px;
+    background: url('Icons/logout_black.png') no-repeat;
+}
+
+#disconnection:hover {
+    background: url('Icons/logout_grey.png') no-repeat black;
+}
+
+

@@ -1,0 +1,43 @@
+body { 
+    margin: 0; 
+    background-color: AliceBlue;
+}
+
+a {
+    color: #09C;
+    text-decoration: none;
+}
+
+.cont {
+    margin: 15px;
+    padding: 20px;
+    background: white;
+    border: 1px solid #BBB;
+}
+
+h1 {
+    margin: 0;
+    font-family: Roboto;
+    font-size: 2em;
+}
+
+h2 {
+    margin: 0 0 10px 0;
+    font-family: Roboto;
+    font-size: 1.5em;
+    color: #369;
+}
+
+/* --- Tables --- */
+
+.border1 {
+    border: 1px solid black;
+    border-collapse:collapse;
+}
+
+.border1 td {
+    padding: 5px 10px;
+    border: 1px solid black; 
+}
+
+.border1 p { margin: 0; }
