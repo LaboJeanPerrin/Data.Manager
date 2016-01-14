@@ -59,14 +59,17 @@ def explore(L, pid):
         - L     (list)  The modified list
     '''
     
+    print()
+    print(L)
+    
     root = L[pid][3]
     psize = 0
     
     dext = {}
-    res = run("ls -qgGd {0}/* | awk '{{print  substr($1,0,1),$3,substr($7,{1},{2})}}'".format(root, len(root)+2, 256))
+    res = run("ls -qgGd \"{0}\"/* | awk '{{d=substr($1,0,1);s=$3; $1=$2=$3=$4=$5=$6=\"\";gsub(/^[ ]+/, \"\", $0);print d,s,substr($0,{1},256)}}'".format(root, len(root)+2))
     for r in res:
         
-        # print(r)
+        print(r)
         
         # Definitions
         tmp = r.split()
@@ -79,7 +82,7 @@ def explore(L, pid):
             # ===================================
             
             # --- Add directory to list
-            L.append([pid, 0, None, root+'/'+tmp[2]])
+            L.append([pid, 0, None, root+'/'+' '.join(tmp[2:])])
             id = len(L)-1
             
             # --- Recursive exploration
@@ -146,7 +149,7 @@ def explore(L, pid):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Clear the screen
-# os.system('clear')
+os.system('clear')
 
 # --- Inputs
 root = str(sys.argv[1])
