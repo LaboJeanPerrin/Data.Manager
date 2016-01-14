@@ -19,16 +19,16 @@ Labnotes.conf
 	#ServerName www.example.com
 
 	ServerAdmin webmaster@localhost
-	ServerName lab.notes
+	ServerName data.manager
 
-	DocumentRoot /var/www/lab.notes
+	DocumentRoot /var/www/data.manager
 
 	<Directory />
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
 
-	<Directory /var/www/lab.notes>
+	<Directory /var/www/data.manager>
 		Options +ExecCGI
 		DirectoryIndex Programs/index.py
 	</Directory>
@@ -60,5 +60,19 @@ Pour les DB:
 	sudo apt-get install sqlite3
 + Install sqlite-manager firefox plugin
 
-Pour les équations:
-	sudo apt-get install python3-matplotlib
+-------------------------------------
+Pour la ligne de commande:
+	
+	sudo gedit ~/.bash_aliases
+
+and add:
+
+stree() {
+/home/ljp/Web/Data.Manager/stree.py $1
+}
+
+Reload aliases:
+	source ~/.bashrc
+
+Usage:
+	stree dir
