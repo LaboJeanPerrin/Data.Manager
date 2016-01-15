@@ -1,0 +1,74 @@
+
+Useful: 
+sudo apt-get install pngtools
+
+pnginfo file.png
+
+=== MATLAB =================================================================
+
+imread/imwrite
+
+--- Results
+
+Images 7642 > 3135 | CR = 2.44
+Scan   7642 > 4145 | CR = 1.84
+
+=== PNGCRUCH ===============================================================
+
+Note: work only on PNG images. I use the output of Matlab's imwrite.
+
+--- Install
+
+sudo apt-get install pngcrush
+
+--- Usage
+
+ Let pngcruch choose the best filter (long !):
+
+pngcrush -brute -e ".compressed.png" image.png
+
+--- Results
+
+Images 3135 > 3064 (best method: 10) 	| CR = 2.49
+Scan   4145 > 4099 (best method: 10) 	| CR = 1.86
+
+=== OPTIPNG ================================================================
+
+--- Install
+
+Via Software manager
+
+--- Usage
+
+optipng test.tif
+
+--- Results
+
+optipng test.tif
+Default level: -o2
+
+Images 	7642 > 3068 | CR = 2.49
+Scan	7642 > 4114 | CR = 1.86
+
+optipng -o7 test.tif
+Slow !
+
+Images 	7642 > 3064 | CR = 2.49
+Scan	7642 > 4114 | CR = 1.86
+
+=== PNGOUT =================================================================
+
+Installé mais "unsupported format"
+
+=== PEAZIP =================================================================
+
+Install from the website, download and install the .deb file
+
+ZIP
+Images 	7642 > 3024
+Scan	7642 > 4294
+
+ZPAQ
+Images 	7642 > 3695
+Scan 	7642 > 4876
+

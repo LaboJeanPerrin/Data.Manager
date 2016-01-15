@@ -67,9 +67,7 @@ Pour la ligne de commande:
 
 and add:
 
-stree() {
-/home/ljp/Web/Data.Manager/stree.py $1
-}
+stree() { /home/ljp/Web/Data.Manager/stree.py $@; }
 
 Reload aliases:
 	source ~/.bashrc
