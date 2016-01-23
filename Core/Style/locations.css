@@ -40,3 +40,39 @@
 .form_txt {
     font-family: Roboto;
 }
+
+#cont_new { display: none; }
+
+#stop_update { display: none; }
+
+#cont_update { 
+    display: none;
+    width: 100%;
+    margin: 20px 0 0 0;
+    font-family: Roboto;
+}
+
+#cont_update_folders {
+    float: left;
+    width: 150px;
+    text-align: right;
+}
+#cont_update_files {
+    float: left;
+    width: 250px;
+    text-align: right;
+}
+#cont_update_size { 
+    float: left;
+    width: 250px;
+    text-align: right;
+}
+
+#cont_update td {padding: 0 10px; }
+
+.update_num {
+    font-family: Roboto-mono;
+    font-size: 2em;
+    color: #0f71a6;
+}
+

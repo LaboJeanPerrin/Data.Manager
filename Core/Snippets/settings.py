@@ -5,6 +5,7 @@
 #    IMPORTS
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+import os
 from Snippets.database import DB
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -30,7 +31,7 @@ class Settings:
             -
         '''
         
-        self.settings = {}
+        self.settings = {'root':os.path.dirname(os.path.dirname(os.path.dirname(__file__)))+'/'}
         self.DB = DB('Settings.db')
         
     # ----------------------------------------------------------------------

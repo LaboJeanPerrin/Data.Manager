@@ -455,11 +455,20 @@ class HTML(HtmlTree):
         return self.single(p, 'input', optv, optkv)
     
     # ----------------------------------------------------------------------
-    def _select(self, p, opt=None, *optv, **optkv):
+    def pre(self, p, *optv, **optkv):
+        self.ref = self.paired(p, 'pre', optv, optkv)
+        return self.ref
+    
+    # ----------------------------------------------------------------------
+    def _select(self, p, opt=None, select=None, *optv, **optkv):
         ref = self.paired(p, 'select', optv, optkv)
         if isinstance(opt, dict):
             for k, v in opt.items():
-                self._option(ref, k, v)
+                if select is not None and select==k:
+                    self._option(ref, k, v, 'selected')
+                else:
+                    self._option(ref, k, v)
+                    
         self.ref = ref;
         return self.ref
     

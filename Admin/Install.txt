@@ -74,3 +74,23 @@ Reload aliases:
 
 Usage:
 	stree dir
+
+-------------------------------------------
+Pour la communication par ssh:
+
+sudo apt-get install sshpass
+
+Quand on ajoute une nouvelle location, il faut ajouter www-data à known host.
+Sur le serveur:
+sudo mkdir /var/www/.ssh
+sudo chmod -R 777 /var/www/.ssh
+
+Pour chaque client, depuis le serveur:
+sudo -u www-data ssh ljp@134.157.132.xxx
+The authenticity of host '134.157.132.xxx (134.157.132.xxx)' can't be established.
+ECDSA key fingerprint is 46:db:a7:d3:b4:2f:f1:9d:a3:74:e8:71:b2:ee:6f:10.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '134.157.132.xxx' (ECDSA) to the list of known hosts.
+ljp@134.157.132.xxx's password: 
+exit
+
