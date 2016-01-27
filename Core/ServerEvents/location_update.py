@@ -24,22 +24,47 @@ def send(s, what='data'):
 
 # --- Html header
 send('text/event-stream;charset=utf-8', what='Content-type')
+send('3600000', what='retry')
 
 # --- Inputs
 inputs = cgi.FieldStorage()
 IP = inputs.getvalue('ip')
 path = inputs.getvalue('path')
-jpath = inputs.getvalue('jpath')
+name = inputs.getvalue('name')
+jpath = inputs.getvalue('jpath').strip()
+
+
+'''
+send('Test')
+send(''.join(['&%d;' % ord(x) for x in 'Poisson n°1']))
+send('!CLOSE')
+'''
 
 if IP is not None:
 
-    # --- Subprocess preparation
-    cmd = "sshpass -p ljp3231 ssh -t -t ljp@{0} 'python3 /home/ljp/.stree/stree.py -p {1} -o {2}'".format(IP, path, jpath)
+    # --- STREE CONSTRUCTION -----------------------------------------------
+    cmd = "sshpass -p ljp3231 ssh -t -t ljp@{0} 'python3 /home/ljp/.stree/stree.py -p \"{1}\" -o \"/home/ljp/.stree/Trees/{2}.json\"'".format(IP, path, name)
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
+    # --- Subprocess monitoring
+    for line in iter(p.stdout.readline, b''):
+        tmp = ''.join(['&#%d;' % ord(x) for x in line.rstrip().decode(encoding='UTF-8')])
+        send(tmp)
+        # send(line.rstrip().decode(encoding='UTF-8'))
+
+    # --- STREE IMPORT -----------------------------------------------------
+    
+    # --- Import JSON file
+    send('!IMPORT')
+    
+    # --- Subprocess preparation
+    cmd = "sshpass -p ljp3231 scp ljp@{0}:\"'/home/ljp/.stree/Trees/{1}.json'\" '{2}'".format(IP, name, jpath)
+    send(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     # --- Subprocess monitoring
     for line in iter(p.stdout.readline, b''):
         send(line.rstrip().decode(encoding='UTF-8'))
-
+    
+    # --- END --------------------------------------------------------------
     send('!CLOSE')

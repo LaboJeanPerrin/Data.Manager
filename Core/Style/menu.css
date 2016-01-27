@@ -5,14 +5,14 @@
 }
 
 #logo {
-    position: fixed;
+    position: fixed;    
     top: 0px;
     margin: 25px auto;
     width: 250px;
 }
 
 #menu {
-    position: absolute;
+    position: fixed;
     top: 150px;
 }
 
@@ -38,14 +38,14 @@
 #menu_Locations { background-image: url('Icons/Sources/locations.svg'); }
 
 #language {
-    position: absolute;
+    position: fixed;
     bottom: 15px;
     left: 15px;
 }
 
 #disconnection {
     display: block;
-    position: absolute;
+    position: fixed;
     bottom: 15px;
     left: 200px;
     width: 44px;

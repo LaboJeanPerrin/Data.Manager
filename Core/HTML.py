@@ -311,7 +311,7 @@ class HtmlTree:
                 out += '\n'
             
             
-        return out    
+        return out.encode('ascii', 'ignore').decode('utf-8') 
 
 # ==========================================================================     
 class HTML(HtmlTree):

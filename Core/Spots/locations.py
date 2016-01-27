@@ -7,6 +7,7 @@
 
 import os.path
 import json
+from datetime import datetime
 
 from Spot import Spot
 from Snippets.database import DB
@@ -325,11 +326,11 @@ class spot(Spot):
                     H.h2(cont)
                     H.text(0, ('Storage scheme','Schéma de stockage'))
 
-                    H.p(cont)
-                    H.text(0, 'File path:')
-                    H.span(0, id='jpath')
+                    H.span(cont, id='jpath')
                     H.text(0, jpath)
-
+                    
+                    last_json = H.p(cont)
+                    
                     # === UPDATE STORAGE SCHEME ============================
 
                     H._submit(cont, ('Update scheme', 'Actualiser'), id='update')
@@ -370,13 +371,24 @@ class spot(Spot):
                     
                     if os.path.exists(jpath):
                         
-                        tree = self.get_json(jpath)
-                        H.pre(cont)
-                        H.text(0, tree);
+                        H.text(last_json, ('Last update: ', 'Dernière actualisation: '))
+                        t = os.path.getmtime(jpath)
+                        if self.session.language=='en':
+                            H.text(last_json, "{:%b %d, %Y - %H:%M:%S}".format(datetime.fromtimestamp(t)))
+                        if self.session.language=='fr':
+                            H.text(last_json, "{:%d %b %Y - %H:%M:%S}".format(datetime.fromtimestamp(t)))
+                            
+                        H.br(cont)
+                        H._submit(cont, ('Fold all', 'Tout cacher'), onclick='fold_all();')
+                        H._submit(cont, ('Unfold all', 'Tout voir'), onclick='unfold_all();')
+                        
+                        tree = self.stree_json2html(jpath)
+                        H.div(cont, cls='stree')
+                        H.text(0, '\n'+tree, decode=False);
                         
                         
     # ----------------------------------------------------------------------
-    def get_json(self, jpath):
+    def stree_json2html(self, jpath):
         '''
         Build display.
         
@@ -393,27 +405,32 @@ class spot(Spot):
         f.close()
         
         out = ''
+        report = 0
+        
         for i, x in enumerate(L):
             
             # --- Find level
             
             pre = ''
             parent = x[0]
+            close = False;
             while parent is not None:
                 if parent in [item[0] for item in L[i+1:]]:
                     if parent is x[0]:
-                        # pre += '─├ '
-                        pre += '-- '
+                        pre += ';2749#&;0059#& '
                     else:
-                        # pre += ' │ '
-                        pre += ' | '
+                        pre += ' ;4749#& '
                 else:
                     if parent is x[0]:
-                        # pre += '─└ '
-                        pre += '-- '
+                        pre += ';2749#&;2949#& '
+                        close = True;
                     else:
                         pre += '   '
                 parent = L[parent][0]
+            
+            if x[1]<=0:
+                out += "<span onclick='toggle_view({0});'>".format(i)
+            
             out += pre[::-1]
             
             # --- Size on disk
@@ -422,7 +439,7 @@ class spot(Spot):
             
             # --- Name
             if x[1]==-1:     # Link
-                out += '    <span style="color:#6F0; font-weight: bold;">' + x[3] + '</span> -> ' + x[4]
+                out += '    <span style="color:#3C3; font-weight: bold;">' + x[3] + '</span> -> ' + x[4]
             
             elif x[1]==0:     # Directory
                 out += '    <b>' + x[3] + '</b>'
@@ -432,8 +449,19 @@ class spot(Spot):
             else:           #Group
                 out += '    <span style="color:#399;">' + x[3] + '</span> [' + str(x[1]) + ' files]'
                     
+            if x[1]<=0:
+                out += "</span><span id='view_{0}'>".format(i)
+                
+            if close:
+                if x[1]<=0:
+                    report += 1
+                else:
+                    out += '</span>'
+                
             out += '\n'
                 
+        out += '</span>'*report
+        
         return out
     
    

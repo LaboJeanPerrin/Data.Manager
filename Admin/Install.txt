@@ -81,7 +81,7 @@ Pour la communication par ssh:
 sudo apt-get install sshpass
 
 Quand on ajoute une nouvelle location, il faut ajouter www-data à known host.
-Sur le serveur:
+Sur le serveur (une fois):
 sudo mkdir /var/www/.ssh
 sudo chmod -R 777 /var/www/.ssh
 
