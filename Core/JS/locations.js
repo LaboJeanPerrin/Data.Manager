@@ -9,7 +9,7 @@ function CloseEventSource() {
     Esrc.close();
     
     // Reload (without POST)
-    window.location.href = window.location.href;
+    // window.location.href = window.location.href;
 }
 
 // --- View functions

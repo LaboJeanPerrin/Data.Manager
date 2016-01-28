@@ -43,7 +43,7 @@ send('!CLOSE')
 if IP is not None:
 
     # --- STREE CONSTRUCTION -----------------------------------------------
-    cmd = "sshpass -p ljp3231 ssh -t -t ljp@{0} 'python3 /home/ljp/.stree/stree.py -p \"{1}\" -o \"/home/ljp/.stree/Trees/{2}.json\"'".format(IP, path, name)
+    cmd = "ssh -t -t ljp@{0} 'python3 /home/ljp/.stree/stree.py -p \"{1}\" -o \"/home/ljp/.stree/Trees/{2}.json\"'".format(IP, path, name)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     # --- Subprocess monitoring
@@ -58,7 +58,7 @@ if IP is not None:
     send('!IMPORT')
     
     # --- Subprocess preparation
-    cmd = "sshpass -p ljp3231 scp ljp@{0}:\"'/home/ljp/.stree/Trees/{1}.json'\" '{2}'".format(IP, name, jpath)
+    cmd = "scp ljp@{0}:\"'/home/ljp/.stree/Trees/{1}.json'\" '{2}'".format(IP, name, jpath)
     send(cmd)
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
